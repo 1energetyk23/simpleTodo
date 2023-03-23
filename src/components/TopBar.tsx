@@ -5,10 +5,11 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 
 interface TopBarProps {
-  toggleModal: () => void;
+  toggleCreateModal: () => void;
+  toggleDeleteManyModal: () => void;
 }
 
-const TopBar: FC<TopBarProps> = ({ toggleModal }) => {
+const TopBar: FC<TopBarProps> = ({ toggleCreateModal, toggleDeleteManyModal }) => {
   const router = useRouter();
   const { data: session } = useSession({
     required: true,
@@ -23,14 +24,17 @@ const TopBar: FC<TopBarProps> = ({ toggleModal }) => {
     }
     return (
       <>
-        <div className='w-[30%] max-w-s left-0 right-0 absolute mx-auto h-20 rounded-b-full text-sm text-black flex justify-evenly items-center shadow-xl bg-white'>
-          <span>Logged in as:</span>
-          <Image loader={loader} src={session.user.image ?? ""} alt="profile image" width={48} height={48} className="rounded-full" />
-          <span>{session.user.name}</span>
+        <div className='w-[32%] max-w-s absolute mx-auto left-0 right-0 -top-10 hover:top-0 transition-all h-30 text-sm bg-transparent'>
+          <button onClick={() => void signOut()} className="h-10 w-full text-white bg-red-500 hover:bg-red-600 transition-colors">Sign out</button>
+          <div className='h-20 w-full flex justify-evenly items-center text-black rounded-b-full shadow-xl bg-white'>
+            <span>Logged in as:</span>
+            <Image loader={loader} src={session.user.image ?? ""} alt="profile image" width={48} height={48} className="rounded-full" />
+            <span>{session.user.name}</span>
+          </div>
         </div>
         <nav className='w-screen h-12 p-0 flex border-gray-400 border-y-1 border-solid shadow-md justify-between'>
-          <button onClick={() => toggleModal()} className='w-[40%] h-full text-sm text-green-600 hover:bg-green-600 hover:text-white hover:transition-all'>Add todo</button>
-          <button onClick={() => void signOut()} className='w-[40%] h-full text-sm text-red-600 hover:bg-red-600 hover:text-white hover:transition-all'>Sign out</button>
+          <button onClick={() => toggleCreateModal()} className='w-[40%] h-full text-sm text-green-600 hover:bg-green-600 hover:text-white hover:transition-all'>Add todo</button>
+          <button onClick={() => toggleDeleteManyModal()} className='w-[40%] h-full text-sm text-red-600 hover:bg-red-600 hover:text-white hover:transition-all'>Delete Many</button>
         </nav>
       </>
     )

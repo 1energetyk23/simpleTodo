@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import type { FC } from 'react'
 
 interface CreateModalProps {
-  toggleModal: () => void,
+  toggleCreateModal: () => void
   create: ({ }: { todo: string }) => void
 }
 
-const CreateModal: FC<CreateModalProps> = ({ toggleModal, create }) => {
+const CreateModal: FC<CreateModalProps> = ({ toggleCreateModal, create }) => {
   const [todo, setTodo] = useState("");
   return (
     <div className='absolute w-screen h-screen bg-gray-600/40 flex justify-center items-center top-0'>
@@ -16,16 +16,16 @@ const CreateModal: FC<CreateModalProps> = ({ toggleModal, create }) => {
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               create({ todo: todo });
-              toggleModal();
+              toggleCreateModal();
             }
           }}
         />
         <div className='w-[600px] max-[100%]: h-16 text-xl flex justify-center'>
-          <button className='w-[50%] h-16 text-2xl text-red-600 hover:bg-red-600 hover:text-white hover:transition-all' onClick={() => toggleModal()}>Close</button>
+          <button className='w-[50%] h-16 text-2xl text-red-600 hover:bg-red-600 hover:text-white hover:transition-all' onClick={() => toggleCreateModal()}>Close</button>
           <button className='w-[50%] h-16 text-2xl text-green-600 hover:bg-green-600 hover:text-white hover:transition-all'
             onClick={() => {
               create({ todo: todo });
-              toggleModal();
+              toggleCreateModal();
             }}
           >Add</button>
         </div>

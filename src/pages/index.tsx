@@ -7,10 +7,16 @@ import { useState } from "react";
 import CreateModal from "~/components/CreateModal";
 import Todo from "~/components/Todo";
 import DeleteManyModal from "~/components/DeleteManyModal";
+import ModifyModal from "~/components/ModifyModal";
+import SetNewTodoNameModal from "~/components/SetNewTodoNameModal";
 
 const Home: NextPage = () => {
   const [createModal, setCreateModal] = useState(false);
   const [deleteManyModal, setDeleteManyModal] = useState(false);
+  const [modifyModal, setModifyModal] = useState(false);
+  const [currentlyModified, setCurrentlyModified] = useState("");
+  const [renameModal, setRenameModal] = useState(false);
+  const [currentlyRenamed, setCurrentlyRenamed] = useState("")
   const { data: todos, refetch: refetchTodos } = api.todo.getAll.useQuery(undefined);
   const createTodo = api.todo.create.useMutation({
     onSuccess: () => {
@@ -27,11 +33,24 @@ const Home: NextPage = () => {
       void refetchTodos();
     }
   })
+  const modifyTodoName = api.todo.modifyName.useMutation({
+    onSuccess: () => {
+      void refetchTodos();
+    }
+  })
   const toggleCreateModal = () => {
     setCreateModal(!createModal);
   }
   const toggleDeleteManyModal = () => {
     setDeleteManyModal(!deleteManyModal);
+  }
+  const toggleRenameModal = (id: string) => {
+    setCurrentlyRenamed(id);
+    setRenameModal(!renameModal);
+  }
+  const setModify = (id: string) => {
+    setCurrentlyModified(id);
+    setModifyModal(!modifyModal);
   }
   return (
     <>
@@ -47,13 +66,17 @@ const Home: NextPage = () => {
       {deleteManyModal && <DeleteManyModal toggleDeleteManyModal={toggleDeleteManyModal} todos={todos} deleteTodo={({ todoId }) => {
         void deleteTodo.mutate({ id: todoId })
       }} />}
+      {modifyModal && <ModifyModal todos={todos} toggleModifyModal={() => void setModifyModal(!modifyModal)} id={currentlyModified} />}
+      {renameModal && <SetNewTodoNameModal id={currentlyRenamed} toggleSetNewTodoNameModal={toggleRenameModal} defaultValue={todos ? (todos.find((value) => value.id === currentlyRenamed)?.todo || "") : ""} setNewTodoName={(id, todo) => {
+        modifyTodoName.mutate({ id, todo });
+      }} />}
       <main className="w-screen max-w-5xl bg-rgb mx-auto flex gap-3 flex-col pt-12">
         {todos?.map((value, index) => {
-          return <Todo todo={value.todo} checked={value.isChecked} key={index} id={value.id} check={({ todoId }) => {
+          return <Todo todo={value.todo} checked={value.isChecked} key={index} id={value.id} setModify={setModify} check={({ todoId }) => {
             void checkTodo.mutate({ id: todoId });
           }} deleteTodo={({ todoId }) => {
             void deleteTodo.mutate({ id: todoId });
-          }} />
+          }} toggleRename={toggleRenameModal} />
         })}
       </main>
     </>

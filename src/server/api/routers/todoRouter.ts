@@ -24,6 +24,7 @@ export const TodoRouter = createTRPCRouter({
   toggleCheck: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      //verify if the user is the owner of the todo
       const row = await prisma.todos.findFirst({
         where: {
           id: input.id,
@@ -44,6 +45,7 @@ export const TodoRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
+      //verify if the user is the owner of the todo
       const row = prisma.todos.findFirst({
         where: {
           id: input.id,
@@ -55,6 +57,27 @@ export const TodoRouter = createTRPCRouter({
       return prisma.todos.delete({
         where: {
           id: input.id
+        }
+      })
+    }),
+  modifyName: protectedProcedure
+    .input(z.object({ id: z.string(), todo: z.string() }))
+    .mutation(({ ctx, input }) => {
+      //verify if the user is the owner of the todo
+      const row = prisma.todos.findFirst({
+        where: {
+          id: input.id,
+          userId: ctx.session.user.id
+        }
+      })
+      if (row === null)
+        return;
+      return prisma.todos.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          todo: input.todo
         }
       })
     })

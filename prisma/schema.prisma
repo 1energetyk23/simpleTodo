@@ -20,12 +20,20 @@ model Example {
   updatedAt DateTime @updatedAt
 }
 
+model TodoNotes {
+  id     String @id @default(cuid())
+  note   String @db.Text
+  Todo   Todos  @relation(fields: [todoId], references: [id])
+  todoId String
+}
+
 model Todos {
-  id        String  @id @default(cuid())
+  id        String      @id @default(cuid())
   todo      String
-  isChecked Boolean @default(false)
-  User      User    @relation(fields: [userId], references: [id])
+  isChecked Boolean     @default(false)
+  User      User        @relation(fields: [userId], references: [id])
   userId    String
+  todoNotes TodoNotes[]
 }
 
 // Necessary for Next auth

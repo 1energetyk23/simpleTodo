@@ -23,8 +23,8 @@ const ModifyModal: FC<ModifyModalProps> = ({ id, toggleModifyModal, todos }) => 
   const deleteNote = api.todoNotes.deleteNote.useMutation({ onSuccess: () => void refetchTodoNotes() });
   return (
     <div className='absolute w-screen h-screen bg-gray-600/40 flex justify-center items-center top-0'>
-      <section className='bg-white w-[600px] max-w-full: h-[36rem] max-h-full p-0 pr-2 rounded-2xl overflow-hidden shadow-lg'>
-        <p className='w-[600px] px-4 max-[100%]: h-16 text-2xl flex justify-center items-center'>{todos.find((value) => value.id == id)?.todo}</p>
+      <section className='bg-white w-[600px] max-w-full h-[36rem] max-h-full p-0 pr-2 rounded-2xl overflow-hidden shadow-lg'>
+        <p className='w-[600px] px-4 max-w-[100%] h-16 text-2xl flex justify-center items-center'>{todos.find((value) => value.id == id)?.todo}</p>
         <div className='box-shadow w-[200%] relative right-[50%] flex justify-center'>
           <div className='px-2 py-4 w-[50%] scrollbar h-[28rem] scrollbar overflow-y-auto'>
             {todoNotes ? todoNotes.map((value, index) => {

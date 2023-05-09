@@ -21,8 +21,8 @@ const DeleteManyModal: FC<DeleteManyModalProps> = ({ toggleDeleteManyModal, todo
     }
   }
   return (<div className='absolute w-screen h-screen bg-gray-600/40 flex justify-center items-center top-0'>
-    <section className='bg-white w-[600px] max-w-full: h-[36rem] max-h-full p-0 rounded-2xl overflow-hidden shadow-lg'>
-      <p className='w-[600px] max-[100%]: h-16 text-2xl flex justify-center items-center'>Delete Many Todos</p>
+    <section className='bg-white w-[600px] max-w-full h-[36rem] max-h-full p-0 rounded-2xl overflow-hidden shadow-lg'>
+      <p className='w-[600px] max-w-[100%] h-16 text-2xl flex justify-center items-center'>Delete Many Todos</p>
       <div className='px-2 overflow-hidden'>
         <div className='box-shadow w-[200%] relative right-[50%] flex justify-center'>
           <div className='h-[28rem] w-[50%] py-4 px-2 box-border overflow-y-auto scrollbar'>

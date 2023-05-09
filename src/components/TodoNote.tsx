@@ -20,7 +20,7 @@ const TodoNote: FC<TodoNotesProps> = ({ id, defaultValue, modifyNote, deleteNote
               setValue(e.target.value);
               setHeight((e.target.scrollHeight - 2) / 28)
             }}
-            onFocus={e => setHeight((e.target.scrollHeight - 2) / 28)}
+            onFocus={e => setHeight((e.target.scrollHeight - 8) / 28)}
           />
           <button className="w-[50%] p-1 transition-all text-yellow-500 hover:bg-yellow-600 hover:text-white" onClick={() => {
             setIsEdited(false)
